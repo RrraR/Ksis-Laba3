@@ -14,7 +14,7 @@ public partial class LoginForm : Form
     public LoginForm()
     {
         InitializeComponent();
-        FormClosing += LoginForm_FormClosing;
+        //FormClosing += LoginForm_FormClosing;
         BntEnter.Click += BntEnter_Click;
     }
 
@@ -26,12 +26,8 @@ public partial class LoginForm : Form
             MessageBox.Show("Please enter a username");
             return;
         }
-        FormClosing -= LoginForm_FormClosing;
+        //FormClosing -= LoginForm_FormClosing;
         Close();
     }
     
-    void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
-    {
-        _userName = "";
-    }
 }

@@ -71,7 +71,6 @@ partial class LoginForm
         this.Controls.Add(this.txtUsername);
         this.Name = "LoginForm";
         this.Text = "LoginForm";
-        this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
         this.ResumeLayout(false);
         this.PerformLayout();
     }

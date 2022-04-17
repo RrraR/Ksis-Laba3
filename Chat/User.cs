@@ -7,7 +7,7 @@ namespace Chat
     class User
     {
         public string Name;
-        public IPAddress IP;
+        public readonly IPAddress IP;
         public int tcpPort;
 
         private TcpClient tcpClient;
@@ -16,7 +16,7 @@ namespace Chat
         public User(string login, IPEndPoint endPoint)
         {
             IP = endPoint.Address;
-            tcpPort = 8002;
+            tcpPort = 8005;
             this.Name = login;
         }
         public User(TcpClient tcpClient, int port)
@@ -66,6 +66,16 @@ namespace Chat
         public void Disconnect()
         {
             tcpClient.Close();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is User o && o.IP == this.IP;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.IP.GetHashCode();
         }
     }
 }

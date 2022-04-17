@@ -12,8 +12,8 @@ namespace Chat
         private string _username;
         private IPAddress Ip;
         private bool _alive = true;
-        private const int UDPPort = 8001;
-        private const int TCPPort = 8002;
+        private const int UDPPort = 8004;
+        private const int TCPPort = 8005;
         private readonly IPAddress broadcastAddress = IPAddress.Broadcast;
 
         private static Task receiveThreadUDP;
@@ -37,7 +37,13 @@ namespace Chat
                 else
                 {
                     _username = loginForm.UserName;
-                    Ip = GetIP();
+                    string  MassageUsername = _username.Substring(0, _username.IndexOf('/'));
+                    string MessageIp = _username.Substring(_username.IndexOf('/') + 1);
+                    _username = MassageUsername;
+                    if (IPAddress.TryParse(MessageIp, out var address))
+                    {
+                        Ip = address;
+                    }
                     _alive = true;
                     SendMessageUDP("0" + _username);
                     
@@ -52,22 +58,22 @@ namespace Chat
             }
                 
         }
-        private static IPAddress GetIP()
-        {
-            string hostName = Dns.GetHostName();
-            IPAddress[] ipAddrs = Dns.GetHostAddresses(hostName);
-            foreach (var item in ipAddrs)
-            {
-                if (item.AddressFamily == AddressFamily.InterNetwork)
-                    return item;
-            }
-
-            return ipAddrs[0];
-        }
+        // private static IPAddress GetIP()
+        // {
+        //     string hostName = Dns.GetHostName();
+        //     IPAddress[] ipAddrs = Dns.GetHostAddresses(hostName);
+        //     foreach (var item in ipAddrs)
+        //     {
+        //         if (item.AddressFamily == AddressFamily.InterNetwork)
+        //             return item;
+        //     }
+        //
+        //     return ipAddrs[0];
+        // }
         
         private void SendMessageUDP(string message)
         {
-            UdpClient sender = new UdpClient();
+            UdpClient sender = new UdpClient(new IPEndPoint(Ip, UDPPort));
             try
             {
                 byte[] data = Encoding.UTF8.GetBytes(message);
@@ -118,8 +124,6 @@ namespace Chat
                 try
                 {
                     user.SendMessage(tcpMessage);
-
-
                 }
                 catch
                 {
@@ -172,7 +176,7 @@ namespace Chat
                                 $"{DateTime.Now.ToShortTimeString()} :  {client.Name} [{client.IP}] left chat\n" +
                                 txtChat.Text;
                         }));
-
+                        client.Disconnect();
                         _setChat.UserList.Remove(client);
                         return;
 
@@ -215,9 +219,12 @@ namespace Chat
         {
             _alive = false;
             SendMessageToAllClients("1");
-            foreach (var user in _setChat.UserList)
+            if (_setChat.UserList.Count != 0)
             {
-                user.Disconnect();
+                foreach (var user in _setChat.UserList)
+                {
+                    user.Disconnect();
+                }
             }
         }
 
