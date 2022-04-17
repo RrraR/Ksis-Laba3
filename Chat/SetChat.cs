@@ -18,11 +18,11 @@ namespace Chat
 
         public string WhatIsThis(string message, IPEndPoint adress)
         {
-            if (message[0] == '0')
+            if (message[0] == '0' && message.Length >= 2)
             {
                 string name;
                 name = message.Substring(1);
-                AddUser(name, adress);
+                //AddUser(name, adress);
                 return name + " entered chat";
             }
             return "";

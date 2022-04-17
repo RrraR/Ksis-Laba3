@@ -176,7 +176,6 @@ namespace Chat
                                 $"{DateTime.Now.ToShortTimeString()} :  {client.Name} [{client.IP}] left chat\n" +
                                 txtChat.Text;
                         }));
-                        client.Disconnect();
                         _setChat.UserList.Remove(client);
                         return;
 
@@ -230,7 +229,14 @@ namespace Chat
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            SendMessage();
+            if (txtToSend.Text == "")
+            {
+                MessageBox.Show("Empty message");
+            }
+            else
+            {
+                SendMessage();
+            }
         }
         
     }
