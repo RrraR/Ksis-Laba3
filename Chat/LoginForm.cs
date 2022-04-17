@@ -5,11 +5,11 @@ namespace Chat;
 
 public partial class LoginForm : Form
 {
-    string _userName = "";
+    string _userinfo = "";
     
     public string UserName
     {
-        get { return _userName; }
+        get { return _userinfo; }
     }
     public LoginForm()
     {
@@ -20,8 +20,8 @@ public partial class LoginForm : Form
 
     private void BntEnter_Click(object sender, EventArgs e)
     {
-        _userName = txtUsername.Text.Trim();
-        if (string.IsNullOrEmpty(_userName))
+        _userinfo = txtUsername.Text.Trim();
+        if (string.IsNullOrEmpty(_userinfo))
         {
             MessageBox.Show("Please enter a username");
             return;

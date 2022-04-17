@@ -20,8 +20,7 @@ namespace Chat
         {
             if (message[0] == '0' && message.Length >= 2)
             {
-                string name;
-                name = message.Substring(1);
+                var name = message.Substring(1);
                 //AddUser(name, adress);
                 return name + " entered chat";
             }
